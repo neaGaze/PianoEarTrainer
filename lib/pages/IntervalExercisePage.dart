@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:piano_ear_trainer/models/ExerciseDataModel.dart';
+import 'package:piano_ear_trainer/pages/TrainerPage.dart';
 import 'package:piano_ear_trainer/widgets/AppDrawer.dart';
 import 'package:piano_ear_trainer/widgets/ExerciseListTile.dart';
-import 'package:piano_ear_trainer/widgets/ExerciseLoadCard.dart';
 
 class IntervalExercisePage extends StatefulWidget {
   IntervalExercisePage({Key key, this.title}) : super(key: key);
@@ -21,13 +21,15 @@ class _IntervalExercisePageState extends State<IntervalExercisePage> {
   void initState() {
     super.initState();
     widget.exerciseDataModels
-        .add(ExerciseDataModel("Unison, m3, M3, Octave", "Ascending", 0.2));
+        .add(ExerciseDataModel("Unison, m3, M3, Octave", "Ascending", 0.2, () {
+      Navigator.pushNamed(context, TrainerPage.routeTrainer);
+    }));
+    widget.exerciseDataModels.add(
+        ExerciseDataModel("Unison, m3, M3, Octave", "Descending", 0.7, () {}));
     widget.exerciseDataModels
-        .add(ExerciseDataModel("Unison, m3, M3, Octave", "Descending", 0.7));
+        .add(ExerciseDataModel("P4, P5", "Ascending", 0.9, () {}));
     widget.exerciseDataModels
-        .add(ExerciseDataModel("P4, P5", "Ascending", 0.9));
-    widget.exerciseDataModels
-        .add(ExerciseDataModel("P4, P5", "Descending", 0.12));
+        .add(ExerciseDataModel("P4, P5", "Descending", 0.12, () {}));
   }
 
   @override
@@ -59,6 +61,7 @@ class _IntervalExercisePageState extends State<IntervalExercisePage> {
                       subtitle: widget.exerciseDataModels[index].subtitle,
                       completionPercent:
                           widget.exerciseDataModels[index].completionPercent,
+                      onTap: widget.exerciseDataModels[index].onTap,
                     );
                   },
                   itemCount: widget.exerciseDataModels.length),

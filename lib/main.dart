@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:piano_ear_trainer/pages/ChordsExercisePage.dart';
 import 'package:piano_ear_trainer/pages/IntervalExercisePage.dart';
 import 'package:piano_ear_trainer/pages/ScaleExercisePage.dart';
+import 'package:piano_ear_trainer/pages/TrainerPage.dart';
+import 'package:piano_ear_trainer/services/AudioPlayer.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  AudioPlayer();
   runApp(MyApp());
 }
 
@@ -27,6 +31,7 @@ class MyApp extends StatelessWidget {
             ChordsExercisePage(title: "Chords Exercise"),
         ScaleExercisePage.routeScale: (context) =>
             ScaleExercisePage(title: "Scale Exercise"),
+        TrainerPage.routeTrainer: (context) => TrainerPage(title: "Train"),
       },
     );
   }

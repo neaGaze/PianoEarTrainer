@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:piano_ear_trainer/pages/TrainerPage.dart';
 
 class ExerciseListTile extends StatefulWidget {
-  ExerciseListTile({Key key, this.title, this.subtitle, this.completionPercent})
+  ExerciseListTile(
+      {Key key, this.title, this.subtitle, this.completionPercent, this.onTap})
       : super(key: key);
 
   final String title;
   final String subtitle;
   final double completionPercent;
+  final VoidCallback onTap;
 
   @override
   _ExerciseListTileState createState() => _ExerciseListTileState();
@@ -42,7 +45,10 @@ class _ExerciseListTileState extends State<ExerciseListTile> {
             widget.subtitle,
             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
           ),
-          onTap: () {},
+          onTap: () {
+            widget.onTap();
+            // Navigator.pushNamed(context, TrainerPage.routeTrainer);
+          },
         ),
       ),
     );
