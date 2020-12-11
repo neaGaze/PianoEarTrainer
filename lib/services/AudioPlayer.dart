@@ -3,9 +3,10 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:piano_ear_trainer/models/SoundStatus.dart';
+import 'package:piano_ear_trainer/services/AbstractPlayer.dart';
 import 'package:soundpool/soundpool.dart';
 
-class AudioPlayer {
+class AudioPlayer implements AbstractPlayer {
   static final AudioPlayer _instance = AudioPlayer._internal(
       soundpool: Soundpool()); // streamType: StreamType.notification
 
@@ -49,6 +50,7 @@ class AudioPlayer {
     }
   }
 
+  @override
   Future<void> playSound(int i) async {
     if (soundMap.containsKey(i)) {
       SoundStatus soundStatus = soundMap[i] as SoundStatus;
@@ -58,6 +60,7 @@ class AudioPlayer {
     }
   }
 
+  @override
   Future<void> stopSound(int i) async {
     if (soundMap.containsKey(i)) {
       SoundStatus soundStatus = soundMap[i] as SoundStatus;
@@ -67,5 +70,22 @@ class AudioPlayer {
         log("Sound playing stopped");
       }
     }
+  }
+
+  @override
+  Future<void> stopAllSounds() async {
+    for (var key in soundMap.keys) {
+      SoundStatus soundStatus = soundMap[key] as SoundStatus;
+      if (soundStatus.soundStreamId != null) {
+        await soundpool.stop(soundStatus.soundStreamId);
+        log("All playing Sound playing stopped");
+      }
+    }
+  }
+
+  @override
+  Future<void> playSoundClean(int i) async {
+    await stopAllSounds();
+    await playSound(i);
   }
 }

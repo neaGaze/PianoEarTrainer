@@ -1,6 +1,12 @@
 import "package:flutter/material.dart";
 import 'package:piano_ear_trainer/models/ExerciseDataModel.dart';
+import 'package:piano_ear_trainer/models/TrainingCategory.dart';
+import 'package:piano_ear_trainer/models/TrainingType.dart';
 import 'package:piano_ear_trainer/pages/TrainerPage.dart';
+import 'package:piano_ear_trainer/services/AudioPlayerDriver.dart';
+import 'package:piano_ear_trainer/services/IntervalUnitFactory.dart';
+import 'package:piano_ear_trainer/services/TrainingPlanner.dart';
+import 'package:piano_ear_trainer/services/UnitFactory.dart';
 import 'package:piano_ear_trainer/widgets/AppDrawer.dart';
 import 'package:piano_ear_trainer/widgets/ExerciseListTile.dart';
 
@@ -22,8 +28,19 @@ class _IntervalExercisePageState extends State<IntervalExercisePage> {
     super.initState();
     widget.exerciseDataModels
         .add(ExerciseDataModel("Unison, m3, M3, Octave", "Ascending", 0.2, () {
-      Navigator.pushNamed(context, TrainerPage.routeTrainer);
+      List<UnitFactory> units = List();
+      units.add(UnisonIntervalUnitFactory());
+      units.add(MajorThirdIntervalUnitFactory());
+      units.add(MinorThirdIntervalUnitFactory());
+      units.add(OctaveIntervalUnitFactory());
+      int timesToRepeatNotes = 32;
+
+      Navigator.pushNamed(context, TrainerPage.routeTrainer,
+          arguments: AudioPlayerDriver(
+              TrainingType(TrainingCategory.INTERVAL, units),
+              timesToRepeatNotes));
     }));
+
     widget.exerciseDataModels.add(
         ExerciseDataModel("Unison, m3, M3, Octave", "Descending", 0.7, () {}));
     widget.exerciseDataModels
